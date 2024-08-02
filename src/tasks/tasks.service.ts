@@ -9,8 +9,8 @@ import { UpdateTaskDTO } from './dto/update-task.dto';
 export class TasksService {
     constructor(@InjectModel(Task.name) private TaskModel: Model<Task>) { }
 
-    findAll(){
-        this.TaskModel.find(); 
+   async findAll(){
+      return await this.TaskModel.find(); 
     }
 
    async create(createTask: CreateTaskDTO ){
@@ -20,14 +20,15 @@ export class TasksService {
     }
 
     async findOne(id: string) {
-     return  this.TaskModel.findById(id)
+     return await this.TaskModel.findById(id)
     }
 
     async delete(id: string) {
-        return  this.TaskModel.findByIdAndDelete(id)
+      const task =  await this.TaskModel.findByIdAndDelete(id)
+      return task ; 
        }
 
        async update(id: string, task:UpdateTaskDTO) {
-        return  this.TaskModel.findByIdAndUpdate(id,task)
+        return await this.TaskModel.findByIdAndUpdate(id,task, {new: true})
        }
 }
